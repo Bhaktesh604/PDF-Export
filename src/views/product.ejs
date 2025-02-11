@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A4 Company Brochure</title>
+    <style>
+      header .date {
+        text-align: start;
+      }
+      .image {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        z-index: -1;
+      }
+      .image img {
+        width: 100%;
+        height: 100%;
+        filter: brightness(1.1);
+      }
+
+      .table-row .content div {
+        padding: 0;
+      }
+
+      .yellow_color {
+        display: block;
+        width: 15px;
+        height: 15px;
+        background-color: #ffd700;
+        border-radius: 99px;
+        border: 1px solid black;
+      }
+
+      .color_box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        text-transform: capitalize;
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 10px; /* Top margin allows space for the header */
+        }
+
+        body {
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+      .table {
+        padding: 0 10px;
+        margin-left: 20px;
+        background-color: #ffffff;
+      }
+
+      .table,
+      .table-row {
+        width: 445.71px;
+      }
+
+      .highlight {
+        background-color: rgb(255, 230, 0, 0.7);
+      }
+
+      .redtext {
+        color: red;
+      }
+
+      .table-row {
+        display: flex;
+        /* border: 1px solid black; */
+        border-top: 2px solid black;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+      }
+
+      .table-row:last-child{
+        border-bottom: 2px solid black;
+      }
+
+      .table-row div {
+        padding: 0px 9px;
+        border-right: 2px solid black;
+      }
+
+      .table-row .content.redtext div {
+        border: none;
+      }
+
+      .table-row div:last-child {
+        border-right: none;
+      }
+
+      .table-row .header {
+        width: 40%;
+        font-weight: bold;
+      }
+
+      .table-row .content {
+        width: 60%;
+      }
+
+      div {
+        page-break-inside: avoid;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image">
+      <div class="bg"></div>
+      <img
+        src="https://res.cloudinary.com/dm73yqj3a/image/upload/v1737444005/payaw2k4ew1wjag8n7sl.png"
+        alt=""
+      />
+    </div>
+    <table style="width: 100%">
+      <thead>
+        <tr>
+          <th colspan="2">
+            <header class="newtabheader">
+              <div class="date">
+                <p>Order date: <%= date %></p>
+              </div>
+              <div class="logo">
+                <img src="<%= logoImage %>" alt="Company Logo" width="100" />
+                <!-- <img src="https://res.cloudinary.com/dk5yh02fl/image/upload/v1739020363/eaesgkehhxvyadj2bo0t.png" alt="Company Logo" /> -->
+              </div>
+            </header>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let pageIndex = 0; pageIndex < paginatedProducts.length;
+        pageIndex++) { let productPage = paginatedProducts[pageIndex]; %> <%
+        productPage.forEach((product, index)=> { %>
+        <tr>
+          <td>
+            <div class="product_image" style="width: 300px;height:300px;">
+              <!-- <img src="https://res.cloudinary.com/dk5yh02fl/image/upload/v1739020368/ko8l9xqkxeugjargx5bv.jpg" alt="Product Image" /> -->
+              <img src="<%= product.image %>" alt="Product Image" width="300px" height="300px" />
+            </div>
+          </td>
+          <td style="display: contents;">
+            <div class="table">
+              <div class="table-row">
+                <div class="header highlight">Order ID</div>
+                <div class="content"><%= product.id %></div>
+              </div>
+              <div class="table-row">
+                <div class="header highlight">Metal</div>
+                <div class="content color_box">
+                  <% if (['rose', 'yellow' , 'white' ].includes(product.goldType)) { %>
+                    <span
+                      class="<%= product.goldType === 'rose' ? 'rose_color' : product.goldType === 'yellow' ? 'yellow_color' : 'white_color' %>"></span>
+                    <%= product.goldType %>, <%= product.material %>, <%= product.carat %>
+                          <% } else { %>
+                            <%= product.material %>
+                              <% } %>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="header highlight">Main Diamond</div>
+                <div class="content"><%= product.mainDiamond %></div>
+              </div>
+              <div class="table-row">
+                <div class="header highlight">Side Stone</div>
+                <div class="content"><%= product.sideStone %></div>
+              </div>
+              <div class="table-row">
+                <div class="header highlight">Size</div>
+                <div class="content"><%= product.size %></div>
+              </div>
+              <div class="table-row">
+                <div class="header capitalize totalcost highlight">
+                  Total Cost
+                </div>
+                <div class="content uppercase totalcost">
+                  <span class="pointvalue"> <%= product.productCost %> </span>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="header highlight">Remark</div>
+                <div class="content redtext">
+                  <% if (product.remark) { %> <%
+                  product.remark.split('\n').forEach(function(line) { %>
+                  <div><%= line %></div>
+                  <% }); %> <% } %>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <% }) %> <% } %>
+      </tbody>
+    </table>
+    <style>
+      .a4-page {
+        width: 210mm;
+        height: 297mm;
+        margin: 0 auto;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 0;
+        page-break-before: always; /* Ensures new page in print */
+      }
+
+      /* Prevent page break on the first .a4-page */
+      .a4-page:first-child {
+        page-break-before: auto;
+      }
+
+      .a4-page .image {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        z-index: -1;
+      }
+
+      .a4-page .image .bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        opacity: 0.1;
+        background: #fff;
+      }
+
+      .a4-page .image img {
+        width: 100%;
+        height: 100%;
+        filter: brightness(1.1);
+      }
+
+      @media print {
+        body {
+          background-color: white;
+        }
+
+        .a4-page {
+          box-shadow: none;
+        }
+      }
+
+      @media screen and (max-width: 210mm) {
+        .a4-page {
+          width: 100%;
+          height: auto;
+          margin: 0;
+        }
+      }
+
+      .a4-page .body {
+        z-index: 1;
+      }
+
+      .total {
+        /* padding-top: 10px; */
+        /* margin-bottom: 10px; */
+        color: #f4f4f4;
+        background-color: #110353;
+        padding-left: 20px;
+        padding-right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .final-total {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: 1px solid white;
+      }
+
+      .sub-total {
+        padding-bottom: 10px;
+        padding-top: 10px;
+        background-color: #110353;
+      }
+
+      .total span {
+        font-size: 18px;
+        text-transform: capitalize;
+      }
+
+      footer {
+        width: 100%;
+        background-color: #f9d5e7;
+        color: #110353;
+        position: absolute;
+        bottom: 0;
+      }
+
+      footer .footer_contact {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+
+      footer .footer_contact .box {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        right: -50px;
+        top: -20px;
+        background-color: #f9d5e7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 99px;
+        border: 2px solid white;
+      }
+
+      .bank-details {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .bank-details table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .bank-details th,
+      .bank-details td {
+        text-align: left;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+
+      .bank-details th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+      }
+
+      .bank-details td {
+        background-color: #fff;
+      }
+
+      .bank-details th,
+      .bank-details td {
+        width: 50%;
+      }
+
+      .bank-details tr:nth-child(even) td {
+        background-color: #f7f7f7;
+      }
+
+      .bank-details tr:hover td {
+        background-color: #eaf6ff;
+      }
+
+      .uppercase {
+        text-transform: uppercase;
+      }
+
+      .capitalize {
+        text-transform: capitalize;
+      }
+
+      .totalcost {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .between {
+        width: 92%;
+        padding: 1px 10px;
+        display: flex;
+        justify-content: space-between;
+        border: none;
+        background-color: #89ce2342;
+      }
+
+      .currency-symbol,
+      .product-cost {
+        margin: 0;
+      }
+    </style>
+
+    <!-- Total Cost and Bank Details -->
+    <div class="a4-page">
+      <div class="image">
+        <img
+          src="https://res.cloudinary.com/dm73yqj3a/image/upload/v1737444005/payaw2k4ew1wjag8n7sl.png"
+          alt=""
+        />
+      </div>
+      <div class="body">
+        <main>
+          <div class="sub-total">
+            <div class="total">
+              <span>TOTAL ORDER VALUE:</span>
+              <span class="pointvalue">$<%= totalCost %></span>
+            </div>
+            <div class="total">
+              <span>SHIPPING COST:</span>
+              <span class="pointvalue">$<%= shipping %></span>
+            </div>
+          </div>
+          <div class="total final-total totalcost">
+            <span class="uppercase">TOTAL PAYMENT:</span>
+            <span class="pointvalue"
+              >$<%= Number(totalCost) + Number(shipping) %></span
+            >
+          </div>
+          <div class="bank-details">
+            <table>
+              <tr>
+                <th>Bank Name</th>
+                <td><%= bankDetails?.bankname %></td>
+              </tr>
+              <tr>
+                <th>Account Name</th>
+                <td><%= bankDetails?.accname %></td>
+              </tr>
+              <tr>
+                <th>Account Number</th>
+                <td><%= bankDetails?.accnumber %></td>
+              </tr>
+              <tr>
+                <th>IFSC Code</th>
+                <td><%= bankDetails?.ifsc %></td>
+              </tr>
+              <tr>
+                <th>Address</th>
+                <td><%= bankDetails?.address %></td>
+              </tr>
+              <tr>
+                <th>Phone</th>
+                <td><%= bankDetails?.phone %></td>
+              </tr>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      document.querySelectorAll(".pointvalue").forEach((el) => {
+        // Extract and clean the content
+        let price = parseFloat(el.textContent.replace("$", "").trim());
+
+        // Check if it's a valid number
+        if (!isNaN(price)) {
+          // Format the price to 2 decimal places and add the $ back
+          el.textContent = `$${price.toFixed(2)}`;
+        } else {
+          // Handle the case where the text content is not a valid number
+          console.warn(`Invalid price found in element:`, el);
+        }
+      });
+    </script>
+  </body>
+</html>

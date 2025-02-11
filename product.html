@@ -1,0 +1,839 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A4 Company Brochure</title>
+
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .a4-page {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 0;
+    }
+
+    .a4-page .image {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .a4-page .image .bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      opacity: 0.1;
+      background: #fff;
+    }
+
+    .a4-page .image img {
+      width: 100%;
+      height: 100%;
+      filter: brightness(1.1);
+    }
+
+    @media print {
+      body {
+        background-color: white;
+      }
+
+      .a4-page {
+        box-shadow: none;
+      }
+      .page-break {
+        break-before: always !important; /* Forces a break before this element */
+      }
+    }
+
+    @media screen and (max-width: 210mm) {
+      .a4-page {
+        width: 100%;
+        height: auto;
+        margin: 0;
+      }
+    }
+
+    header {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      background-color: transparent;
+      z-index: 1;
+    }
+
+    header .logo {
+      width: 100%;
+      height: 55px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    header .logo img {
+      width: 150px;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    header .date p {
+      padding: 10px;
+      margin: 0;
+    }
+
+    header .date {
+      text-align: start;
+    }
+
+    .a4-page .body {
+      z-index: 1;
+    }
+
+    main {
+      padding: 20px;
+      margin-top: 140px;
+    }
+
+    main .product {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+
+    main .product_1 {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    main .product_image {
+      width: 250px;
+      height: 250px;
+    }
+
+    main .product_image img {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 1/1;
+      object-fit: contain;
+    }
+
+    .table {
+      padding:0 10px;
+      margin-left: 20px;
+      background-color: #ffffff;
+    }
+
+    .table,
+    .table-row {
+      width: 445.71px;
+    }
+
+    .highlight {
+      background-color: rgb(255, 230, 0, 0.7);
+    }
+
+    .redtext {
+      color: red;
+    }
+
+    .table-row {
+      display: flex;
+      border: 2px solid black;
+    }
+
+    .table-row div {
+      padding: 0px 20px;
+      border-right: 2px solid black;
+    }
+
+    .table-row .content.redtext div{
+      border: none;
+    }
+
+    .table-row div:last-child {
+      border-right: none;
+    }
+
+    .table-row .header {
+      width: 40%;
+      font-weight: bold;
+    }
+
+    .table-row .content {
+      width: 60%;
+    }
+
+    .total {
+      color: #f4f4f4;
+      background-color: #110353;
+      padding-left: 20px;
+      padding-right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .final-total {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid white;
+    }
+
+    .sub-total {
+      padding-bottom: 10px;
+      padding-top: 10px;
+      background-color: #110353;
+    }
+
+    .total span {
+      font-size: 18px;
+      text-transform: capitalize;
+    }
+
+    footer {
+      width: 100%;
+      background-color: #f9d5e7;
+      color: #110353;
+      position: absolute;
+      bottom: 0;
+    }
+
+    footer .footer_contact {
+      width: 80%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    footer .footer_contact .box {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      right: -50px;
+      top: -20px;
+      background-color: #f9d5e7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 99px;
+      border: 2px solid white;
+    }
+
+    .color_box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+    }
+
+    .yellow_color {
+      display: block;
+      width: 22px;
+      height: 22px;
+      background-color: #ffd700;
+      border-radius: 99px;
+      border: 1px solid black;
+    }
+
+    .white_color {
+      display: block;
+      width: 22px;
+      height: 22px;
+      background-color: #f0f0f0;
+      border-radius: 99px;
+      border: 1px solid black;
+    }
+
+    .rose_color {
+      display: block;
+      width: 22px;
+      height: 22px;
+      background-color: #ffc0cb;
+      border-radius: 99px;
+      border: 1px solid black;
+    }
+
+    .bank-details {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .bank-details .table-row {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .bank-details .header,
+    .bank-details .content {
+      text-align: left;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .bank-details .header {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+
+    .bank-details .content {
+      background-color: #fff;
+    }
+
+    .bank-details .header,
+    .bank-details .content {
+      width: 50%;
+    }
+
+    .bank-details .table-row:nth-child(even) .content {
+      background-color: #f7f7f7;
+    }
+
+    .bank-details .table-row:hover .content {
+      background-color: #eaf6ff;
+    }
+
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    .totalcost {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .between {
+      width: 92%;
+      padding: 1px 10px;
+      display: flex;
+      justify-content: space-between;
+      border: none;
+      background-color: #89ce2342;
+    }
+
+    .currency-symbol,
+    .product-cost {
+      margin: 0;
+    }
+
+  </style>
+</head>
+
+<body>
+  
+    <div class="a4-page">
+      <div class="image">
+        <div class="bg"></div>
+        <img src="https://res.cloudinary.com/dm73yqj3a/image/upload/v1737444005/payaw2k4ew1wjag8n7sl.png" alt="" />
+      </div>
+      <div class="body">
+        <header>
+          <div class="date">
+            <p>Order date: 9/2/2025
+            </p>
+          </div>
+          <div class="logo">
+            <img src="https://res.cloudinary.com/dk5yh02fl/image/upload/v1739020363/eaesgkehhxvyadj2bo0t.png" alt="Company Logo" />
+          </div>
+        </header>
+        <main>
+          
+            
+            <!-- <div class="product"> -->
+              <div class="product ">
+              
+                <div class="product_image">
+                  <img src="https://res.cloudinary.com/dk5yh02fl/image/upload/v1739020368/ko8l9xqkxeugjargx5bv.jpg" alt="Product Image" />
+                </div>
+                <div class="table">
+                  <div class="table-row">
+                    <div class="header highlight">Order ID</div>
+                    <div class="content">
+                      OD218
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Metal</div>
+                    <div class="content color_box">
+                      
+                                platinum
+                                  
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Main Diamond</div>
+                    <div class="content">
+                      Est consequat Et s
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Side Stone</div>
+                    <div class="content">
+                      Qui recusandae Null
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Size</div>
+                    <div class="content">
+                      Ex et id ut vero
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header uppercase totalcost highlight">TOTAL COST</div>
+                    <div class="content uppercase totalcost">
+                      <span class="pointvalue">
+                        82
+                      </span>
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Remark</div>
+                    <div class="content redtext">
+                      
+                        
+                          <div>
+                            Aliquam modi ratione
+                          </div>
+                          
+                          <div>
+                            Aliquam modi ratione
+                          </div>
+                          
+                          <div>
+                            Aliquam modi ratione
+                          </div>
+                          
+                          <div>
+                            Aliquam modi ratione
+                          </div>
+                          
+                            
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+            
+            
+            <!-- <div class="product"> -->
+              <div class="product ">
+              
+                  TestTest
+                  <div class="product_image">
+                    <img src="https://res.cloudinary.com/dk5yh02fl/image/upload/v1739020382/coqmx0whcl2svrqnojqd.jpg" alt="Product Image" />
+                  </div>
+                  <div class="table">
+                    <div class="table-row">
+                      <div class="header highlight">Order ID</div>
+                      <div class="content">
+                        OD220
+                      </div>
+                    </div>
+                    <div class="table-row">
+                      <div class="header highlight">Metal</div>
+                      <div class="content color_box">
+                        
+                                  silver
+                                    
+                      </div>
+                    </div>
+                    <div class="table-row">
+                      <div class="header highlight">Main Diamond</div>
+                      <div class="content">
+                        Suscipit voluptatem 
+                      </div>
+                    </div>
+                    <div class="table-row">
+                      <div class="header highlight">Side Stone</div>
+                      <div class="content">
+                        Amet facilis et ips
+                      </div>
+                    </div>
+                    <div class="table-row">
+                      <div class="header highlight">Size</div>
+                      <div class="content">
+                        Eligendi non in repu
+                      </div>
+                    </div>
+                    <div class="table-row">
+                      <div class="header uppercase totalcost highlight">TOTAL COST</div>
+                      <div class="content uppercase totalcost">
+                        <span class="pointvalue">
+                          50
+                        </span>
+                      </div>
+                    </div>
+                    <div class="table-row">
+                      <div class="header highlight">Remark</div>
+                      <div class="content redtext">
+                        
+                          
+                            <div>
+                              Exercitation sed qui
+                            </div>
+                            
+                            <div>
+                              Aliquam modi ratione
+                            </div>
+                            
+                            <div>
+                              Aliquam modi ratione
+                            </div>
+                            
+                            <div>
+                              Aliquam modi ratione
+                            </div>
+                            
+                            <div>
+                              Test
+                            </div>
+                            
+                            <div>
+                              Test
+                            </div>
+                            
+                            <div>
+                              Test
+                            </div>
+                            
+                            <div>
+                              Test
+                            </div>
+                            
+                            <div>
+                              Test
+                            </div>
+                            
+                            <div>
+                              
+                            </div>
+                            
+                              
+                      </div>
+                    </div>
+                  </div>
+                  
+            </div>
+            
+            
+            <!-- <div class="product"> -->
+              <div class="product page-break">
+              
+                <div class="product_image">
+                  <img src="https://res.cloudinary.com/dk5yh02fl/image/upload/v1739020399/fdfdqnhxrj4wth0sxonp.jpg" alt="Product Image" />
+                </div>
+                <div class="table">
+                  <div class="table-row">
+                    <div class="header highlight">Order ID</div>
+                    <div class="content">
+                      OD219
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Metal</div>
+                    <div class="content color_box">
+                      
+                                platinum
+                                  
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Main Diamond</div>
+                    <div class="content">
+                      Culpa dolores quia 
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Side Stone</div>
+                    <div class="content">
+                      Doloremque illum si
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Size</div>
+                    <div class="content">
+                      Molestiae impedit p
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header uppercase totalcost highlight">TOTAL COST</div>
+                    <div class="content uppercase totalcost">
+                      <span class="pointvalue">
+                        63
+                      </span>
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Remark</div>
+                    <div class="content redtext">
+                      
+                        
+                          <div>
+                            Voluptatibus autem d
+                          </div>
+                          
+                          <div>
+                            Aliquam modi ratione
+                          </div>
+                          
+                          <div>
+                            Aliquam modi ratione
+                          </div>
+                          
+                          <div>
+                            Aliquam modi ratione
+                          </div>
+                          
+                            
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+            
+        </main>
+        <!-- <footer>
+          <div class="footer_contact">
+            <div class="box">1</div>
+            <span>Email: reasureleb@gmail.com</span>
+            <span>Phone: +91 75738 75177</span>
+          </div>
+        </footer> -->
+      </div>
+    </div>
+    
+    <div class="a4-page">
+      <div class="image">
+        <div class="bg"></div>
+        <img src="https://res.cloudinary.com/dm73yqj3a/image/upload/v1737444005/payaw2k4ew1wjag8n7sl.png" alt="" />
+      </div>
+      <div class="body">
+        <header>
+          <div class="date">
+            <p>Order date: 9/2/2025
+            </p>
+          </div>
+          <div class="logo">
+            <img src="https://res.cloudinary.com/dk5yh02fl/image/upload/v1739020363/eaesgkehhxvyadj2bo0t.png" alt="Company Logo" />
+          </div>
+        </header>
+        <main>
+          
+            
+            <!-- <div class="product"> -->
+              <div class="product ">
+              
+                <div class="product_image">
+                  <img src="https://res.cloudinary.com/dk5yh02fl/image/upload/v1739020409/dmr4c48ta2czgktffanf.jpg" alt="Product Image" />
+                </div>
+                <div class="table">
+                  <div class="table-row">
+                    <div class="header highlight">Order ID</div>
+                    <div class="content">
+                      OD221
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Metal</div>
+                    <div class="content color_box">
+                      
+                                silver
+                                  
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Main Diamond</div>
+                    <div class="content">
+                      Sunt alias dolores u
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Side Stone</div>
+                    <div class="content">
+                      Voluptates enim volu
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Size</div>
+                    <div class="content">
+                      Aliquid aut aliquid 
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header uppercase totalcost highlight">TOTAL COST</div>
+                    <div class="content uppercase totalcost">
+                      <span class="pointvalue">
+                        66
+                      </span>
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="header highlight">Remark</div>
+                    <div class="content redtext">
+                      
+                        
+                          <div>
+                            Test
+                          </div>
+                          
+                          <div>
+                            Test
+                          </div>
+                          
+                          <div>
+                            Test
+                          </div>
+                          
+                          <div>
+                            Test
+                          </div>
+                          
+                          <div>
+                            Test
+                          </div>
+                          
+                          <div>
+                            Test
+                          </div>
+                          
+                          <div>
+                            Test
+                          </div>
+                          
+                            
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+            
+        </main>
+        <!-- <footer>
+          <div class="footer_contact">
+            <div class="box">2</div>
+            <span>Email: reasureleb@gmail.com</span>
+            <span>Phone: +91 75738 75177</span>
+          </div>
+        </footer> -->
+      </div>
+    </div>
+    
+
+      <!-- Total Cost and Bank Details -->
+      <div class="a4-page">
+        <div class="image">
+          <img src="https://res.cloudinary.com/dm73yqj3a/image/upload/v1737444005/payaw2k4ew1wjag8n7sl.png" alt="" />
+        </div>
+        <div class="body">
+          <main>
+            <div class="sub-total">
+              <div class="total">
+                <span>TOTAL ORDER VALUE:</span>
+                <span class="pointvalue">$261</span>
+              </div>
+              <div class="total">
+                <span>SHIPPING COST:</span>
+                <span class="pointvalue">$39</span>
+              </div>
+            </div>
+            <div class="total final-total totalcost">
+              <span class="uppercase">TOTAL PAYMENT:</span>
+              <span class="pointvalue">$300</span>
+            </div>
+            <div class="bank-details">
+              <div class="table-row">
+                <div class="header">Bank Name</div>
+                <div class="content">
+                  Burke Olsen
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="header">Account Name</div>
+                <div class="content">
+                  Reuben Mack
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="header">Account Number</div>
+                <div class="content">
+                  842
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="header">IFSC Code</div>
+                <div class="content">
+                  Non soluta sed fugit
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="header">Address</div>
+                <div class="content">
+                  Deserunt error volup
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="header">Phone</div>
+                <div class="content">
+                  +1 (441) 491-5282
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <script>
+        document.querySelectorAll('.pointvalue').forEach((el) => {
+          // Extract and clean the content
+          let price = parseFloat(el.textContent.replace('$', '').trim());
+
+          // Check if it's a valid number
+          if (!isNaN(price)) {
+            // Format the price to 2 decimal places and add the $ back
+            el.textContent = `$${price.toFixed(2)}`;
+          } else {
+            // Handle the case where the text content is not a valid number
+            console.warn(`Invalid price found in element:`, el);
+          }
+        });
+        
+      </script>
+</body>
+
+</html>
